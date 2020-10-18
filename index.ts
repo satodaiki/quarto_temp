@@ -20,30 +20,4 @@ class Main {
     }
 }
 
-class Score {
-  public suugaku: number;
-  public kokugo: number;
-  public eigo: number;
-  public rank?: number;
-  
-  public constructor(suugaku: number, kokugo: number, eigo: number) {
-    this.suugaku = suugaku;
-    this.eigo = eigo;
-    this.kokugo = kokugo;
-  }
-}
-
-class ClassTest {
-  public scoreList: Score[]
-  public constructor(scoreList: Score[]) {
-    this.scoreList = scoreList;
-  }
-
-  public scoring() {
-    this.scoreList.sort((a, b) => a.eigo - b.eigo).map()
-    for (const score of this.scoreList) {
-    }
-  }
-}
-
 Main.main();
