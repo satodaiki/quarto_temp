@@ -1,5 +1,6 @@
 export default class Piece {
-    public hole: boolean
-    public color: string
-    public height: string
+    public hole: 'with' | 'without';
+    public color: 'white' | 'black';
+    public height: 'low' | 'high';
+    public form: 'circle' | 'rectangle';
 }
