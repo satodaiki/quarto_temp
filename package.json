@@ -1,0 +1,12 @@
+{
+  "name": "node",
+  "scripts": {
+    "start": "tsc index.ts && node index.js"
+  },
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^14.0.27"
+  }
+}
