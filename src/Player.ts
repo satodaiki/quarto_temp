@@ -1,3 +1,4 @@
 export default class Player {
-    public id: number
+    public playerId: number;
+    public pieceId: number;
 }
