@@ -12,4 +12,24 @@ export default class Piece {
         this.height = height;
         this.form = form;
     }
+
+    public getId() {
+        return this.id;
+    }
+
+    public getHole() {
+        return this.hole;
+    }
+
+    public getColor() {
+        return this.color;
+    }
+
+    public getHeight() {
+        return this.height;
+    }
+
+    public getForm() {
+        return this.form;
+    }
 }

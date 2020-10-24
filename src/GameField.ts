@@ -12,9 +12,9 @@ export default class GameField {
     public pieces: Piece[];
 
     constructor() {
-        this.currentPlayer = new Player(0);
         this.playerA = new Player(0);
         this.playerB = new Player(1);
+        this.currentPlayer = this.playerA;
         this.pieceState = new PieceState();
         this.boardState = new BoardState();
         this.createPiece();
@@ -22,19 +22,17 @@ export default class GameField {
 
     //ボードに置かれているか
     public isBoardIn(width: number, height: number): boolean {
-        return (this.boardState[width][height] == null)? true: false;
+        return (this.boardState.squares[width][height] == null)? true: false;
     }
 
     //ボードにピースをセット
-    public setPiece(id:number, width:number, height:number): void {
-        if(this.isBoardIn(width, height) == true) {
-            this.boardState[width][height] = this.pieces[id];
+    public setPiece(id:number, width:number, height:number): boolean {
+        if(this.isBoardIn(width, height)) {
+            this.boardState.squares[width][height] = this.pieces[id];
+            if(this.getResultHorizontal() || this.getResultVertical() || this.getResultRightDownDiagonal() || this.getResultRightUpDiagonal()) return true;
         }
-    }
 
-    //結果判定
-    public getResult() {
-
+        return false;
     }
 
     //相手プレイヤーに駒を渡す
@@ -46,6 +44,138 @@ export default class GameField {
             this.playerA.pieceId = pieceId;
             this.currentPlayer = this.playerA;
         }
+    }
+
+    //結果判定(横)
+    public getResultHorizontal(): boolean {
+        let baseHole;
+        let baseColor;
+        let baseHeight;
+        let baseForm;
+
+        for(var i = 0; i < 4; i++) {
+            //判定のベース取得
+            if(this.boardState.squares[i][0] != null) {
+                baseHole = this.boardState.squares[i][0].getHole();
+                baseColor = this.boardState.squares[i][0].getColor();
+                baseHeight = this.boardState.squares[i][0].getHeight();
+                baseForm = this.boardState.squares[i][0].getForm();
+            } else {
+                continue;
+            }
+
+            for(var j = 1; j < 4; j++) {
+                if(this.boardState.squares[i][j] != null) {
+                    if(baseHole != this.boardState.squares[i][j].getHole()) break;
+                    if(baseColor != this.boardState.squares[i][j].getColor()) break;
+                    if(baseForm != this.boardState.squares[i][j].getForm()) break;
+                    if(baseHeight != this.boardState.squares[i][j].getHeight()) break;
+                } else {
+                    break;
+                }
+
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    //結果判定(縦)
+    public getResultVertical(): boolean {
+        let baseHole;
+        let baseColor;
+        let baseHeight;
+        let baseForm;
+
+        for(var i = 0; i < 4; i++) {
+            //判定のベース取得
+            if(this.boardState.squares[0][i] != null) {
+                baseHole = this.boardState.squares[0][i].getHole();
+                baseColor = this.boardState.squares[0][i].getColor();
+                baseHeight = this.boardState.squares[0][i].getHeight();
+                baseForm = this.boardState.squares[0][i].getForm();
+            } else {
+                continue;
+            }
+
+            for(var j = 1; j < 4; j++) {
+                if(this.boardState.squares[j][i] != null) {
+                    if(baseHole != this.boardState.squares[j][i].getHole()) break;
+                    if(baseColor != this.boardState.squares[j][i].getColor()) break;
+                    if(baseForm != this.boardState.squares[j][i].getForm()) break;
+                    if(baseHeight != this.boardState.squares[j][i].getHeight()) break;
+                } else {
+                    break;
+                }
+
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    //結果判定(右下斜め)
+    public getResultRightDownDiagonal(): boolean {
+        let baseHole;
+        let baseColor;
+        let baseHeight;
+        let baseForm;
+
+        //判定のベース取得
+        if(this.boardState.squares[0][0] != null) {
+            baseHole = this.boardState.squares[0][0].getHole();
+            baseColor = this.boardState.squares[0][0].getColor();
+            baseHeight = this.boardState.squares[0][0].getHeight();
+            baseForm = this.boardState.squares[0][0].getForm();
+        } else {
+            return false;
+        }
+
+        for(var i = 1; i < 4; i++) {
+            if(this.boardState.squares[i][i] != null) {
+                if(baseHole != this.boardState.squares[i][i].getHole()) return false;
+                if(baseColor != this.boardState.squares[i][i].getColor()) return false;
+                if(baseForm != this.boardState.squares[i][i].getForm()) return false;
+                if(baseHeight != this.boardState.squares[i][i].getHeight()) return false;
+            } else {
+                return false;
+            }        
+        }
+
+        return true;
+    }
+
+    //結果判定(右上斜め)
+    public getResultRightUpDiagonal(): boolean {
+        let baseHole;
+        let baseColor;
+        let baseHeight;
+        let baseForm;
+
+        //判定のベース取得
+        if(this.boardState.squares[0][3] != null) {
+            baseHole = this.boardState.squares[0][3].getHole();
+            baseColor = this.boardState.squares[0][3].getColor();
+            baseHeight = this.boardState.squares[0][3].getHeight();
+            baseForm = this.boardState.squares[0][3].getForm();
+        } else {
+            return false;
+        }
+
+        for(var i = 1; i < 4; i++) {
+            if(this.boardState.squares[i][3-i] != null) {
+                if(baseHole != this.boardState.squares[i][3-i].getHole()) return false;
+                if(baseColor != this.boardState.squares[i][3-i].getColor()) return false;
+                if(baseForm != this.boardState.squares[i][3-i].getForm()) return false;
+                if(baseHeight != this.boardState.squares[i][3-i].getHeight()) return false;
+            } else {
+                return false;
+            }        
+        }
+
+        return true;
     }
 
     //ピースを作成
