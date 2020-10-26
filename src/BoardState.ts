@@ -1,5 +1,10 @@
 import Piece from "./Piece";
 
 export default class BoardState {
-    public squares: Piece[][];
+    public squares: Piece[][] = [
+        [null, null, null, null],
+        [null, null, null, null],
+        [null, null, null, null],
+        [null, null, null, null],
+    ];
 }
